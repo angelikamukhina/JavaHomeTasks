@@ -17,6 +17,7 @@ public class TrieT implements Trie {
         boolean success = root.addWord(element);
         if(success) {
             size++;
+            root.addWordsInSubtree(element);
         }
         return success;
     }
@@ -32,12 +33,14 @@ public class TrieT implements Trie {
         boolean success = root.removeWord(element);
         if(success) {
             size--;
+            root.subWordsInSubtree(element);
         }
         return success;
     }
 
     @Override
     public int size() {
+
         return size;
     }
 

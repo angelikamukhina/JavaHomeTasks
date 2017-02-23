@@ -7,6 +7,7 @@ public class Node {
     private boolean isLeaf;
     private boolean isWord;
     private int index;
+    private int wordsInSubtree;
 
 
     Node(Node parent, int index) {
@@ -15,8 +16,19 @@ public class Node {
         isLeaf = true;
         isWord = false;
         this.index = index;
+        wordsInSubtree = 0;
     }
 
+    public void addWordsInSubtree(String element) {
+        wordsInSubtree++;
+        if(element.isEmpty()) {
+            return;
+        }
+        Node next = getNode(element.charAt(0));
+        if(next != null) {
+            next.addWordsInSubtree(element.substring(1));
+        }
+    }
 
     public boolean addWord(String word) {
         if(word.length() == 0) {
@@ -51,6 +63,7 @@ public class Node {
     }
 
     private Node getNode(char c) {
+
         return next[charToIndex(c)];
     }
 
@@ -89,6 +102,19 @@ public class Node {
         }
     }
 
+    public void subWordsInSubtree(String element) {
+        wordsInSubtree--;
+        if(element.isEmpty()) {
+            return;
+        }
+        Node next = getNode(element.charAt(0));
+        if(next != null) {
+            next.subWordsInSubtree(element.substring(1));
+        }
+
+
+
+    }
     public boolean removeWord(String element) {
         if(element.isEmpty()) {
             if(isWord) {
@@ -111,26 +137,9 @@ public class Node {
         }
     }
 
-    private int amountOfWordsInSubtree() {
-        int counter = 0;
-        if(isWord) {
-            counter++;
-        }
-        if(isLeaf) {
-            return counter;
-        }
-
-        for(int i = 0; i < 52; i++) {
-            if(next[i] != null) {
-                counter += next[i].amountOfWordsInSubtree();
-            }
-        }
-        return counter;
-    }
-
     public int amountOfWordsWithPrefix(String prefix) {
         if(prefix.isEmpty()) {
-            return amountOfWordsInSubtree();
+            return wordsInSubtree;
         }
         Node next = getNode(prefix.charAt(0));
         if(next == null) {
