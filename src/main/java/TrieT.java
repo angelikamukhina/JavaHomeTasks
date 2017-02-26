@@ -1,6 +1,3 @@
-/**
- * Created by angelika on 18.02.17.
- */
 public class TrieT implements Trie {
 
     static private class Node {
@@ -15,6 +12,14 @@ public class TrieT implements Trie {
             amountOfWordsInSubtree = 0;
         }
 
+        private Node getNodeWithAdd(char c) {
+            int index = charToIndex(c);
+            if(getNode(c) == null) {
+                next[index] = new Node();
+            }
+            return next[index];
+
+        }
         private Node getNode(char c) {
             return next[charToIndex(c)];
         }
@@ -29,19 +34,19 @@ public class TrieT implements Trie {
 
     public boolean add(String element) {
         if(element.isEmpty()) {
+            if(root.isWord) {
+                return false;
+            }
             root.isWord = true;
+            root.amountOfWordsInSubtree++;
             return true;
         }
+
         Node tmp = root;
-        int index;
 
         for (int i = 0; i < element.length(); i++) {
             tmp.amountOfWordsInSubtree++;
-            index = charToIndex(element.charAt(i));
-            if (tmp.next[index] == null) {
-                tmp.next[index] = new Node();
-            }
-            tmp = tmp.next[index];
+            tmp = tmp.getNodeWithAdd(element.charAt(i));
             if (i == element.length() - 1 && tmp.isWord) {
                 deleteNodes(element);
                 return false;
@@ -74,6 +79,7 @@ public class TrieT implements Trie {
 
             if(child.amountOfWordsInSubtree <= 1) {
                 parent.next[charToIndex(word.charAt(i))] = null;
+                return;
             }
             parent = child;
         }
@@ -84,11 +90,7 @@ public class TrieT implements Trie {
     public boolean contains(String element) {
         Node lastNode = lastNodeOfPrefix(element);
 
-        if(lastNode != null && lastNode.isWord) {
-            return true;
-        }
-
-        return false;
+        return lastNode != null && lastNode.isWord;
     }
 
     private Node lastNodeOfPrefix(String word) {
@@ -103,6 +105,14 @@ public class TrieT implements Trie {
     }
 
     public boolean remove(String element) {
+        if(element.isEmpty()) {
+            if(root.isWord) {
+                root.isWord = false;
+                root.amountOfWordsInSubtree--;
+                return true;
+            }
+            return false;
+        }
         Node lastNode = lastNodeOfPrefix(element);
         if (lastNode != null && lastNode.isWord) {
             deleteNodes(element);

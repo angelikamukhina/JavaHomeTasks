@@ -2,9 +2,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by angelika on 21.02.17.
- */
 public class TrieTTest {
     @Test
     public void howManyStartsWithPrefix() throws Exception {
@@ -12,9 +9,9 @@ public class TrieTTest {
         tr.add("Hell");
         tr.add("Hello");
         tr.add("Hel");
-        assertEquals(tr.howManyStartsWithPrefix("He"), 3);
+        assertEquals(3, tr.howManyStartsWithPrefix("He"));
         tr.remove("Hell");
-        assertEquals(tr.howManyStartsWithPrefix("He"), 2);
+        assertEquals(2, tr.howManyStartsWithPrefix("He"));
     }
 
     @Test
@@ -23,9 +20,9 @@ public class TrieTTest {
         tr.add("a");
         tr.add("Hello");
         tr.add("b");
-        assertEquals(tr.size(), 3);
+        assertEquals(3, tr.size());
         tr.remove("a");
-        assertEquals(tr.size(), 2);
+        assertEquals(2, tr.size());
     }
 
     @Test
@@ -58,10 +55,15 @@ public class TrieTTest {
         TrieT triet = new TrieT();
         triet.add("");
         assertTrue(triet.contains(""));
-        assertEquals(triet.size(), 0);
+        assertEquals(1, triet.size());
+        assertFalse(triet.add(""));
+        assertTrue(triet.remove(""));
+        assertFalse(triet.contains(""));
+        assertFalse(triet.remove(""));
+        assertEquals(0, triet.size());
 
         triet.remove("");
-        assertEquals(triet.size(), 0);
+        assertEquals(0, triet.size());
         assertFalse(triet.contains(""));
         for(char c = 'a'; c <= 'z'; c++) {
             triet.add(Character.toString(c));
@@ -70,7 +72,7 @@ public class TrieTTest {
         for(char c = 'A'; c <= 'Z'; c++) {
             triet.add(Character.toString(c));
         }
-        assertEquals(triet.size(), 52);
+        assertEquals(52, triet.size());
         assertFalse(triet.add("a"));
 
     }
@@ -90,20 +92,20 @@ public class TrieTTest {
         TrieT trie = new TrieT();
         trie.add("Hello");
         assertTrue(trie.contains("Hello"));
-        assertEquals(trie.howManyStartsWithPrefix("He"), 1);
+        assertEquals(1, trie.howManyStartsWithPrefix("He"));
         trie.remove("Hello");
-        assertEquals(trie.size(), 0);
-        assertEquals(trie.howManyStartsWithPrefix("He"), 0);
+        assertEquals(0, trie.size());
+        assertEquals(0, trie.howManyStartsWithPrefix("He"));
     }
 
     public void testFromTask3() {
         TrieT trie = new TrieT();
         trie.add("Hello");
-        assertEquals(trie.size(), 1);
-        assertEquals(trie.howManyStartsWithPrefix("He"), 1);
+        assertEquals( 1, trie.size());
+        assertEquals(1, trie.howManyStartsWithPrefix("He"));
         trie.add("Hello");
-        assertEquals(trie.size(), 1);
-        assertEquals(trie.howManyStartsWithPrefix("He"), 1);
+        assertEquals(1, trie.size());
+        assertEquals(1, trie.howManyStartsWithPrefix("He"));
     }
 
 }
