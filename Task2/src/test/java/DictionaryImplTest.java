@@ -32,7 +32,7 @@ public class DictionaryImplTest {
     public void put() throws Exception {
         DictionaryImpl dict = new DictionaryImpl();
         for(int i = 0; i < 664; i++) {
-            dict.put("" + i, "Vasya" + i);
+            dict.put(String.valueOf(i), "Vasya" + i);
         }
         assertEquals("Vasya2", dict.get("2"));
         assertEquals("Vasya1", dict.put("1", "Vasya"));
@@ -40,7 +40,7 @@ public class DictionaryImplTest {
         assertEquals("Petya", dict.get("2"));
         assertEquals(664, dict.size());
         for(int i = 664; i < 700; i++) {
-            dict.put("" + i, "Petya" + i);
+            dict.put(String.valueOf(i), "Petya" + i);
         }
 
         assertEquals("Petya666", dict.get("666"));
