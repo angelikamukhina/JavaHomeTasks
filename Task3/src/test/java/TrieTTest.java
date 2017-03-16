@@ -5,10 +5,6 @@ import java.io.*;
 import static org.junit.Assert.*;
 
 public class TrieTTest {
-    @Test
-    public void serialize1() throws Exception {
-
-    }
 
     @Test
     public void deserialize() throws Exception {
@@ -21,10 +17,12 @@ public class TrieTTest {
         newTrie.add("Vasya");
         newTrie.add("Petya");
         newTrie.add("Glasha");
-        OutputStream outData = new DataOutputStream(new FileOutputStream("trie"));
-        newTrie.serialize(outData);
-        InputStream inData = new DataInputStream(new FileInputStream("trie"));
-        trie.deserialize(inData);
+        try(OutputStream outData = new DataOutputStream(new FileOutputStream("trie"))) {
+            newTrie.serialize(outData);
+        }
+        try(InputStream inData = new DataInputStream(new FileInputStream("trie"))) {
+            trie.deserialize(inData);
+        }
         assertTrue(trie.contains("Vasya"));
         assertTrue(trie.contains("Petya"));
         assertTrue(trie.contains("Glasha"));
