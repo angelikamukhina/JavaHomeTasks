@@ -5,6 +5,20 @@ import java.io.*;
 import static org.junit.Assert.*;
 
 public class TrieTTest {
+    @Test
+    public void serialize() throws Exception {
+        TrieT trie = new TrieT();
+        try (OutputStream outData = new DataOutputStream(new FileOutputStream("trie"))) {
+            trie.serialize(outData);
+        }
+        TrieT newTrie = new TrieT();
+        newTrie.add("Hello");
+        assertEquals(1, newTrie.size());
+        try (InputStream inData = new DataInputStream(new FileInputStream("trie"))) {
+            newTrie.deserialize(inData);
+        }
+        assertEquals(0, newTrie.size());
+    }
 
     @Test
     public void deserialize() throws Exception {
@@ -17,10 +31,10 @@ public class TrieTTest {
         newTrie.add("Vasya");
         newTrie.add("Petya");
         newTrie.add("Glasha");
-        try(OutputStream outData = new DataOutputStream(new FileOutputStream("trie"))) {
+        try (OutputStream outData = new DataOutputStream(new FileOutputStream("trie"))) {
             newTrie.serialize(outData);
         }
-        try(InputStream inData = new DataInputStream(new FileInputStream("trie"))) {
+        try (InputStream inData = new DataInputStream(new FileInputStream("trie"))) {
             trie.deserialize(inData);
         }
         assertTrue(trie.contains("Vasya"));
@@ -91,11 +105,11 @@ public class TrieTTest {
         triet.remove("");
         assertEquals(0, triet.size());
         assertFalse(triet.contains(""));
-        for(char c = 'a'; c <= 'z'; c++) {
+        for (char c = 'a'; c <= 'z'; c++) {
             triet.add(Character.toString(c));
         }
 
-        for(char c = 'A'; c <= 'Z'; c++) {
+        for (char c = 'A'; c <= 'Z'; c++) {
             triet.add(Character.toString(c));
         }
         assertEquals(52, triet.size());
@@ -127,7 +141,7 @@ public class TrieTTest {
     public void testFromTask3() {
         TrieT trie = new TrieT();
         trie.add("Hello");
-        assertEquals( 1, trie.size());
+        assertEquals(1, trie.size());
         assertEquals(1, trie.howManyStartsWithPrefix("He"));
         trie.add("Hello");
         assertEquals(1, trie.size());
