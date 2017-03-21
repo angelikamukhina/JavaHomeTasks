@@ -3,7 +3,11 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
+<<<<<<< HEAD
 //sourceCompatibility = 1.8
+=======
+//sourceCompatibility = 1.8
+>>>>>>> 663f9f7ab920731dfc5766a492a24a51f8135996
 
 repositories {
     mavenCentral()
