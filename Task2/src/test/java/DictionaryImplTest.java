@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 public class DictionaryImplTest {
     @Test
     public void size() throws Exception {
-
+        DictionaryImpl dict = new DictionaryImpl();
+        assertEquals(0, dict.size());
+        dict.put("1", "Vasya");
+        assertEquals(1, dict.size());
     }
 
     @Test
