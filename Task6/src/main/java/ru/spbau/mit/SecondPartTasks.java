@@ -42,7 +42,7 @@ public final class SecondPartTasks {
         return Stream.generate(() -> Math.pow(rand.nextDouble() - centerX, 2)
                 + Math.pow(rand.nextDouble() - centerY, 2))
                 .limit(amountOfAttacks)
-                .filter(squared_d -> squared_d < 0.25)
+                .filter(squared_d -> squared_d < Math.pow(radius, 2))
                 .count() / (double) amountOfAttacks;
     }
 

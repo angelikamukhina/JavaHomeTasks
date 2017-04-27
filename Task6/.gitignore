@@ -13,3 +13,5 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+!/src/main/java/ru/spbau/mit/FirstPartTasks.java
+Будет удалено src/main/resources/
