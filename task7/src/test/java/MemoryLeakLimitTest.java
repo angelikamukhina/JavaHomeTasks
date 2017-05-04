@@ -11,4 +11,9 @@ public class MemoryLeakLimitTest {
         memoryLeakIdentifier.limit(1);
         long[] veryBigBuffer = new long[1000000];
     }
+
+    @Test
+    public void zeroLimitTest() {
+        memoryLeakIdentifier.limit(0);
+    }
 }
