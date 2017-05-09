@@ -22,7 +22,7 @@ public final class FirstPartTasks {
     public static List<String> allNamesSorted(Stream<Album> albums) {
         return albums
                 .map(Album::getName)
-                .sorted(Comparator.naturalOrder())
+                .sorted()
                 .collect(Collectors.toList());
     }
 
@@ -72,8 +72,8 @@ public final class FirstPartTasks {
     public static Optional<Album> minMaxRating(Stream<Album> albums) {
         Optional<Album> res = albums.min(Comparator.comparingInt(album -> album.getTracks()
                 .stream()
-                .map(Track::getRating)
-                .max(Integer::compare)
+                .mapToInt(Track::getRating)
+                .max()
                 .orElse(0)));
         return res;
     }
@@ -102,6 +102,6 @@ public final class FirstPartTasks {
 
     // Вернуть поток из объектов класса 'clazz'
     public static <R> Stream<R> filterIsInstance(Stream<?> s, Class<R> clazz) {
-        return s.filter(clazz::isInstance).map(obj -> (R)obj);
+        return s.filter(clazz::isInstance).map(clazz::cast);
     }
 }

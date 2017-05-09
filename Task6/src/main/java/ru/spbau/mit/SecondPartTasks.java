@@ -52,7 +52,7 @@ public final class SecondPartTasks {
         return compositions
                 .entrySet()
                 .stream()
-                .max(Comparator.comparingInt(e -> e.getValue().size()))
+                .max(Comparator.comparingInt(e -> e.getValue().stream().mapToInt(String::length).sum()))
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
