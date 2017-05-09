@@ -1,42 +1,34 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class Collections {
 
-    public static <T, R> ArrayList<R> map(Function1<? super T, R> f, Iterable<T> a) {
-        ArrayList<R> res = new ArrayList<>();
-        for (T currentElement : a) {
-            res.add(f.apply(currentElement));
+    public static <T, R> List<R> map(final Function1<? super T, R> func,
+                                     final Iterable<? extends T> items) {
+        List<R> res = new ArrayList<>();
+        for (T currentElement : items) {
+            res.add(func.apply(currentElement));
         }
         return res;
     }
 
-    public static <T> ArrayList<T> filter(Predicate<T> p, Iterable<T> a) {
-        ArrayList<T> res = new ArrayList<T>();
-        for (T currElement : a) {
-            if (p.apply(currElement)) {
+    public static <T> List<T> filter(final Predicate<? super T> predicate,
+                                     final Iterable<? extends T> items) {
+        List<T> res = new ArrayList<>();
+        for (T currElement : items) {
+            if (predicate.apply(currElement)) {
                 res.add(currElement);
             }
         }
         return res;
     }
 
-    public static <T> ArrayList<T> takeWhile(Predicate<T> p, Iterable<T> a) {
-        ArrayList<T> res = new ArrayList<T>();
-        for (T currElement : a) {
-            if (p.apply(currElement)) {
-                res.add(currElement);
-            } else {
-                break;
-            }
-        }
-        return res;
-    }
-
-    public static <T> ArrayList<T> takeUnless(Predicate<T> p, Iterable<T> a) {
-        ArrayList<T> res = new ArrayList<>();
-        for (T currElement : a) {
-            if (!p.apply(currElement)) {
+    public static <T> List<T> takeWhile(final Predicate<? super T> predicate,
+                                        final Iterable<? extends T> items) {
+        List<T> res = new ArrayList<>();
+        for (T currElement : items) {
+            if (predicate.apply(currElement)) {
                 res.add(currElement);
             } else {
                 break;
@@ -45,23 +37,31 @@ public abstract class Collections {
         return res;
     }
 
-    public static <T, R> R foldr(Function2<T, R, R> f, R ini, Iterable<T> a) {
-        Iterator<T> iterator = a.iterator();
+    public static <T> List<T> takeUnless(final Predicate<? super T> predicate,
+                                         final Iterable<? extends T> items) {
+        return takeWhile(predicate.not(), items);
+    }
+
+    public static <T, R> R foldr(final Function2<? super T, ? super R, ? extends R> func,
+                                 final R ini,
+                                 final Iterable<T> items) {
+        Iterator<T> iterator = items.iterator();
         if (!iterator.hasNext()) {
             return ini;
         }
         T nextElement = iterator.next();
         Iterable<T> aNext = () -> iterator;
-        return f.apply(nextElement, foldr(f, ini, aNext));
+        return func.apply(nextElement, foldr(func, ini, aNext));
     }
 
-    public static <T, R> R foldl(Function2<R, T, R> f, R ini, Iterable<T> a) {
-        Iterator<T> iterator = a.iterator();
+    public static <T, R> R foldl(final Function2<? super R, ? super T, ? extends R> func,
+                                 final R ini,
+                                 final Iterable<T> items) {
+        Iterator<T> iterator = items.iterator();
         if (!iterator.hasNext()) return ini;
         T nextElement = iterator.next();
 
         Iterable<T> aNext = () -> iterator;
-        return foldl(f, f.apply(ini, nextElement), aNext);
+        return foldl(func, func.apply(ini, nextElement), aNext);
     }
-
 }

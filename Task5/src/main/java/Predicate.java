@@ -1,33 +1,34 @@
 public abstract class Predicate<T> {
-    public static final Predicate ALWAYS_TRUE = new Predicate() {
+    public static final Predicate<Object> ALWAYS_TRUE = new Predicate<Object>() {
         @Override
-        public Boolean apply(Object arg) {
+        public Boolean apply(final Object arg) {
             return true;
         }
     };
 
-    public static final Predicate ALWAYS_FALSE = new Predicate() {
+    public static final Predicate<Object> ALWAYS_FALSE = new Predicate<Object>() {
         @Override
-        public Boolean apply(Object arg) {
+        public Boolean apply(final Object arg) {
             return false;
         }
     };
 
-    public abstract Boolean apply(T arg);
+    public abstract Boolean apply(final T arg);
 
-    public Predicate<T> or(Predicate<T> p) {
+    public Predicate<T> or(final Predicate<? super T> predicate) {
         return new Predicate<T>() {
             @Override
-            public Boolean apply(T arg) {
-                return Predicate.this.apply(arg) || p.apply(arg);
+            public Boolean apply(final T arg) {
+                return Predicate.this.apply(arg) || predicate.apply(arg);
             }
         };
     }
 
-    public Predicate<T> and(Predicate<T> p) {
+    public Predicate<T> and(final Predicate<? super T> predicate) {
         return new Predicate<T>() {
-            public Boolean apply(T arg) {
-                return Predicate.this.apply(arg) && p.apply(arg);
+            @Override
+            public Boolean apply(final T arg) {
+                return Predicate.this.apply(arg) && predicate.apply(arg);
             }
         };
     }
@@ -35,7 +36,7 @@ public abstract class Predicate<T> {
     public Predicate<T> not() {
         return new Predicate<T>() {
             @Override
-            public Boolean apply(T arg) {
+            public Boolean apply(final T arg) {
                 return !Predicate.this.apply(arg);
             }
         };
